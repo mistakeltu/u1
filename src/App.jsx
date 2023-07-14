@@ -3,6 +3,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { get, store } from "./Functions/LocalStorage";
 import Delete from "./Components/Delete";
+import Edit from "./Components/Edit";
 
 export const KEY = "persons";
 
@@ -13,6 +14,7 @@ function App() {
   const [lastUpdate, setLastUpdate] = useState(Date.now());
 
   const [deleteData, setDeleteData] = useState(null);
+  const [editData, setEditData] = useState(null);
 
   const handleChangeName = (e) => {
     setName(e.target.value);
@@ -26,7 +28,7 @@ function App() {
     const person = {
       name,
       lastName,
-      money: 5,
+      money: 0,
     };
     store(KEY, person);
     setLastName("");
@@ -83,6 +85,7 @@ function App() {
                       <th>Money</th>
                       <th></th>
                       <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -93,17 +96,20 @@ function App() {
                           <td>{person.lastName}</td>
                           <td>{person.money}</td>
                           <td>
-                            <button onClick={(_) => setDeleteData(person)}>
-                              Delete
-                            </button>
-                          </td>
-                          <td>
                             <div>
-                              <input type="number" />
+                              <input></input>
                             </div>
                           </td>
                           <td>
-                            <button>Edit</button>
+                            <button>Add funds</button>
+                          </td>
+                          <td>
+                            <button>Subtract funds</button>
+                          </td>
+                          <td>
+                            <button onClick={(_) => setDeleteData(person)}>
+                              Delete
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -118,6 +124,13 @@ function App() {
         <Delete
           setDeleteData={setDeleteData}
           deleteData={deleteData}
+          setLastUpdate={setLastUpdate}
+        />
+      )}
+      {editData && (
+        <Edit
+          setEditData={setEditData}
+          editData={editData}
           setLastUpdate={setLastUpdate}
         />
       )}
