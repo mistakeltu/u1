@@ -16,6 +16,10 @@ function App() {
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
 
+  // New state variables
+  const [fundsInput, setFundsInput] = useState("");
+  const [selectedPerson, setSelectedPerson] = useState(null);
+
   const handleChangeName = (e) => {
     setName(e.target.value);
   };
@@ -42,6 +46,38 @@ function App() {
     },
     [lastUpdate]
   );
+
+  const addFunds = () => {
+    if (selectedPerson && fundsInput) {
+      const updatedPersons = persons.map((person) => {
+        if (person.id === selectedPerson.id) {
+          return { ...person, money: person.money + parseInt(fundsInput) };
+        }
+        return person;
+      });
+      setPersons(updatedPersons);
+      setSelectedPerson(null);
+      setFundsInput("");
+    }
+  };
+
+  const subtractFunds = () => {
+    if (selectedPerson && fundsInput) {
+      const updatedPersons = persons.map((person) => {
+        if (person.id === selectedPerson.id) {
+          const updatedMoney = person.money - parseInt(fundsInput);
+          return {
+            ...person,
+            money: updatedMoney >= 0 ? updatedMoney : 0,
+          };
+        }
+        return person;
+      });
+      setPersons(updatedPersons);
+      setSelectedPerson(null);
+      setFundsInput("");
+    }
+  };
 
   return (
     <>
@@ -96,15 +132,34 @@ function App() {
                           <td>{person.lastName}</td>
                           <td>{person.money}</td>
                           <td>
-                            <div>
-                              <input></input>
-                            </div>
+                            {selectedPerson &&
+                            selectedPerson.id === person.id ? (
+                              <div>
+                                <input
+                                  type="number"
+                                  value={fundsInput}
+                                  onChange={(e) =>
+                                    setFundsInput(e.target.value)
+                                  }
+                                  placeholder="Enter funds amount"
+                                />
+                              </div>
+                            ) : null}
                           </td>
                           <td>
-                            <button>Add funds</button>
-                          </td>
-                          <td>
-                            <button>Subtract funds</button>
+                            {selectedPerson &&
+                            selectedPerson.id === person.id ? (
+                              <>
+                                <button onClick={addFunds}>Confirm</button>
+                                <button onClick={subtractFunds}>
+                                  Subtract
+                                </button>
+                              </>
+                            ) : (
+                              <button onClick={() => setSelectedPerson(person)}>
+                                Add funds
+                              </button>
+                            )}
                           </td>
                           <td>
                             <button onClick={(_) => setDeleteData(person)}>
