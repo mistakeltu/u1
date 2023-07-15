@@ -16,7 +16,6 @@ function App() {
   const [deleteData, setDeleteData] = useState(null);
   const [editData, setEditData] = useState(null);
 
-  // New state variables
   const [fundsInput, setFundsInput] = useState("");
   const [selectedPerson, setSelectedPerson] = useState(null);
 
