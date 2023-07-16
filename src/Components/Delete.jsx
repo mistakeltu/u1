@@ -4,11 +4,11 @@ import { destroy } from "../Functions/LocalStorage";
 export default function Delete({ setDeleteData, deleteData, setLastUpdate }) {
   const doDestroy = (_) => {
     if (deleteData.money > 0) {
+      alert("This person has money in their bank account. Cannot delete.");
+    } else {
       destroy(KEY, deleteData.id);
       setDeleteData(null);
       setLastUpdate(Date.now());
-    } else {
-      alert("This person has zero money in their bank account. Cannot delete.");
     }
   };
   return (
