@@ -78,6 +78,17 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    if (persons) {
+      const sortedPersons = persons.slice().sort((a, b) => {
+        const lastNameA = a.lastName.toLowerCase();
+        const lastNameB = b.lastName.toLowerCase();
+        return lastNameA.localeCompare(lastNameB);
+      });
+      setPersons(sortedPersons);
+    }
+  }, [persons]);
+
   return (
     <>
       <div className="container text-center">
